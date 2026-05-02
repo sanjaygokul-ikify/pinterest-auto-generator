@@ -32,32 +32,73 @@ st.set_page_config(
 # ─────────────────────────────────────────────
 st.markdown("""
 <style>
-    .main { background: #fff5f5; }
-    h1 { color: #E60023 !important; }
+    /* Global background */
+    .stApp {
+        background: radial-gradient(circle at 10% 20%, rgb(15, 15, 25) 0%, rgb(5, 5, 10) 90%);
+        color: #e0e0ff;
+    }
+    
+    /* Headers */
+    h1, h2, h3 { 
+        color: #00f0ff !important; 
+        font-family: 'Inter', sans-serif;
+        text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        letter-spacing: 0.5px;
+    }
+    
+    /* Input fields & Selectors */
+    .stTextInput > div > div > input, .stSelectbox > div > div > div {
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: #fff !important;
+        border: 1px solid rgba(0, 240, 255, 0.3) !important;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    .stTextInput > div > div > input:focus {
+        border-color: #00f0ff !important;
+        box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+    }
+
+    /* Primary Generate Button */
     .stButton > button {
-        background-color: #E60023;
-        color: white;
+        background: linear-gradient(135deg, #00f0ff 0%, #0070ff 100%);
+        color: #ffffff !important;
         border: none;
         border-radius: 8px;
-        font-weight: 600;
-        padding: 0.6rem 2rem;
+        font-weight: 700;
+        padding: 0.8rem 2rem;
         font-size: 16px;
+        box-shadow: 0 4px 15px rgba(0, 112, 255, 0.3);
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
-    .stButton > button:hover { background-color: #ad081b; color: white; }
-    .metric-card {
-        background: white;
-        border-radius: 12px;
-        padding: 1rem;
-        text-align: center;
-        border: 1px solid #ffe0e0;
+    .stButton > button:hover { 
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 240, 255, 0.5);
     }
+    
+    /* Metrics */
+    [data-testid="stMetricValue"] {
+        color: #00f0ff !important;
+        text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+    }
+    
+    /* Success / Download box */
     .download-box {
-        background: #f0fff4;
-        border: 1px solid #68d391;
+        background: rgba(0, 240, 255, 0.05);
+        border: 1px solid rgba(0, 240, 255, 0.3);
         border-radius: 12px;
         padding: 1.5rem;
         text-align: center;
+        backdrop-filter: blur(5px);
+        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
+    
+    /* Hide some default streamlit stuff for a cleaner look */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -226,28 +267,7 @@ st.title("📌 Pinterest Pin Pack Generator")
 st.markdown("*Generate 50 SEO-optimized Pinterest pins for any niche in seconds.*")
 st.divider()
 
-# Sidebar — API key input if not set
-with st.sidebar:
-    st.header("Settings")
-    if not get_api_key():
-        api_input = st.text_input(
-            "Groq API Key",
-            type="password",
-            placeholder="gsk_...",
-            help="Free at console.groq.com",
-        )
-        if api_input:
-            st.session_state["api_key"] = api_input
-            st.success("API key saved!")
-    else:
-        st.success("API key loaded!")
 
-    st.markdown("---")
-    st.markdown("**How it works**")
-    st.markdown("1. Enter your niche below\n2. Click Generate\n3. Download your Word doc\n4. Deliver to client!")
-    st.markdown("---")
-    st.markdown("**Pricing tips**")
-    st.markdown("- 25 pins → $10\n- 50 pins → $18\n- 100 pins → $35")
 
 # Main form
 col1, col2 = st.columns(2)
@@ -282,7 +302,7 @@ generate_clicked = st.button("Generate Pin Pack", use_container_width=True)
 if generate_clicked:
     api_key = get_api_key()
     if not api_key:
-        st.error("Please enter your Groq API key in the sidebar first.")
+        st.error("System misconfiguration: Groq API key not found in environment secrets.")
     elif not niche.strip():
         st.error("Please enter a niche.")
     else:
@@ -322,5 +342,4 @@ if generate_clicked:
             except Exception as e:
                 st.error(f"Error: {e}")
 
-st.markdown("---")
-st.caption("Powered by Groq (Llama 3.3) · Built for Fiverr sellers · Zero subscription needed")
+
