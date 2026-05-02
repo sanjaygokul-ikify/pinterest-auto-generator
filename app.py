@@ -99,6 +99,9 @@ st.markdown("""
     /* Hide some default streamlit stuff for a cleaner look */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
+    header {visibility: hidden;}
+    [data-testid="stToolbar"] {visibility: hidden;}
+    [data-testid="stHeader"] {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
