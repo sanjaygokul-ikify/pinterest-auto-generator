@@ -40,6 +40,8 @@ Rules:
 - Vary the content types: tips, how-tos, lists, quotes, product ideas, before/after, inspirational
 - Make titles SEO-friendly for Pinterest search
 - Descriptions must sound natural, not robotic
+- CRITICAL: Ensure MAXIMUM DIVERSITY across all pins. Do NOT repeat the same phrasing, ideas, or sentence structures.
+- CRITICAL: Do NOT repeat the same hashtags endlessly. Use highly specific, varied hashtags for each individual pin.
 
 Return ONLY a valid JSON array, no extra text. Format:
 [
